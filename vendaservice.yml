@@ -1,0 +1,25 @@
+server:
+    port: 8084
+spring:
+    h2:
+        console:
+            enabled: true
+    jpa:
+        properties:
+            hibernate: {generateStatistics: true, formatSql: true}
+        showSql: true
+    data:
+        mongodb:
+            uri: 'mongodb://vendaservicedb'
+            database: servicedb
+    kafka:
+        producer:
+            bootstrap-servers: '${SPRING_KAFKA_BOOTSTRAP_SERVER}'
+            key-serializer: org.apache.kafka.common.serialization.StringSerializer
+            value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+            properties: {spring: {json: {add: {type: {headers: false}}}}}
+        consumer:
+            bootstrap-servers: '${SPRING_KAFKA_BOOTSTRAP_SERVER}'
+            key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            value-deserializer: com.uaipago.venda.model.ProdutoDeserializer
+            properties: {spring: {json: {trusted: {packages: '*'}}}}
